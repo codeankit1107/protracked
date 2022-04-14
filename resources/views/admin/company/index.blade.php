@@ -18,13 +18,18 @@
                 <div class="customize-input float-right">
                     <a href="{{route('companies.create')}}" class="btn btn-primary" href="">
                                 <i class="fas fa-plus"></i>
-                            Add Company
+                           Create New Company
                        </a>
                 </div>
             </div>
         </div>
     </div>
 
+
+    
+@if (Session::has('message'))
+<div class="alert alert-info">{{ Session::get('message') }}</div>
+@endif
 
     
     <div class="container mt-5">
@@ -84,7 +89,14 @@
                                       
                                         <td>
                                             <a href="{{route('companies.edit',$item['company_id'])}}" class="btn btn-success">Edit</a>
-                                            <a href="{{route('companies.destroy',$item['company_id'])}}" class="btn btn-danger">Delete</a>
+                                            
+                                            <form action="{{route('companies.destroy',$item['company_id'])}}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+
+
                                         </td>     
 
 
@@ -96,6 +108,8 @@
                                   
                                 </tbody>
                             </table>
+
+                            {{ $companies->links() }}
                         </div>
                     </div>
         

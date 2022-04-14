@@ -8,6 +8,9 @@ use App\Models\Company;
 
 use Validator;
 
+use Session;
+use Illuminate\Support\Facades\Redirect;
+
 
 class CompanyController extends Controller
 {
@@ -15,7 +18,7 @@ class CompanyController extends Controller
     public function index()
     {
                 
-        $companies = Company::all();
+        $companies = Company::paginate(10);
         return view('admin.company.index', compact('companies'));
     }
    
@@ -87,7 +90,7 @@ class CompanyController extends Controller
         $success = false ;
         $data = $request->all();
 
-        return $data;
+       
 
   
             $rules=[
@@ -135,9 +138,8 @@ class CompanyController extends Controller
               
             }
             
-            return  response()->json(['success'=>$success,'message'=>$message], $response_code);
-        
-
+            Session::flash('message', 'Successfully updated Companies!');
+            return Redirect::to('companies');
        
 
     }
@@ -145,6 +147,9 @@ class CompanyController extends Controller
    
     public function destroy($id)
     {
-        //
+        $company = Company::find($id);
+        $company->delete();
+        Session::flash('message', 'Successfully deleted Company!');
+        return Redirect::to('companies');
     }
 }

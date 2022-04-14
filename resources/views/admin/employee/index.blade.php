@@ -1,3 +1,12 @@
+@php
+    
+use App\Models\Company;
+
+$companies = Company::all();
+
+
+@endphp
+
 @include('admin.includes.header')
 
 <main id="main" class="main">
@@ -16,7 +25,7 @@
             </div>
             <div class="col-5 align-self-center">
                 <div class="customize-input float-right">
-                    <a href="{{route('admin.insert.employe')}}" class="btn btn-black" href="">
+                    <a href="{{route('employees.create')}}" class="btn btn-primary" href="">
                                 <i class="fas fa-plus"></i>
                             Add Employee
                        </a>
@@ -25,7 +34,11 @@
         </div>
     </div>
 
-
+    
+    @if (Session::has('message'))
+    <div class="alert alert-info">{{ Session::get('message') }}</div>
+    @endif
+    
     
     <div class="container mt-5">
         <div class="row">
@@ -41,7 +54,9 @@
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Email</th>
-                                       
+                                       <th>Phone</th>
+                                    <th>Company</th>
+
                                         
                                         <th>Action</th>
                                         
@@ -50,7 +65,7 @@
                                 <tbody>
 
 
-                                    @foreach ($employes as $item)
+                                    @foreach ($employees as $item)
 
                                       
                                     <tr>
@@ -60,31 +75,24 @@
                                         <td>{{$item['email']}}</td>
                                         
                                   
-                                        <td>{{$item['phone']}}</td>
-                                      
-                                        <td>
-                                           
-                                        <div>
+                                        <td>{{$item['phone_number']}}</td>
 
-                                            <img src="{{asset('storage/'.$item['image'])}}" alt="" width="50px" height="50px">
-
-                                        </div>
-                                        </td>
-
+                                        <td>{{
                                         
+                                        $companies->where('company_id',$item['company_id'])->first()->company_name
+                                        
+                                        }}</td>
+                                  
 
-
+                                       
                                         <td>
-                                           
-                                            {{date('d-m-Y', strtotime($item['created_at']))}}
+                                            <a href="{{route('employees.edit',$item['employee_id'])}}" class="btn btn-success">Edit</a>
                                             
-                                        
-                                        </td>
-
-                                        <td>{{$item['birthday']}}</td>
-                                        <td>
-                                            <a href="{{route('admin.edit.employe',$item['id'])}}" class="btn btn-black">Edit</a>
-                                            <a href="{{route('admin.delete.employe',$item['id'])}}" class="btn btn-danger">Delete</a>
+                                            <form action="{{route('employees.destroy',$item['employee_id'])}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
                                         </td>     
 
 
@@ -92,10 +100,14 @@
                                     
                                     @endforeach
 
+                                   
+
 
                                   
                                 </tbody>
                             </table>
+
+                            {{ $employees->links() }}
                         </div>
                     </div>
         

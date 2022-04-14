@@ -164,11 +164,11 @@
 
     $("#form").submit(function() {
         event.preventDefault();
-        axios.post("{{ route('admin.add.company') }}", new FormData($("#form")[0])).then(response => {
+        axios.post("{{ route('companies.store') }}", new FormData($("#form")[0])).then(response => {
             console.log(response);
             var data = response.data;
             if (data.success) notify(null, 'Company added successfully', 'top right', 'success', true,
-                "{{ route('admin.company') }}", 1000);
+                "{{ route('companies.index') }}", 1000);
             else {
                 for (var a in data['error']['message']) {
                     console.log(a);
