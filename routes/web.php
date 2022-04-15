@@ -17,7 +17,13 @@ use App\Http\Controllers\EmployeeController;
 */
 
 
-Route::get('/', [AdminViewController::class, 'index'])->name('home');
+Route::match(['get','post'],'/',[AdminViewController::Class,'adminLogin'])->name('adminLogin');
+
+Route::get('admin/logout', [AdminViewController::Class,'logout'])->name('adminLogout');
+
+
+
+Route::get('/home', [AdminViewController::class, 'home'])->name('home');
 
 
 Route::resource('companies', CompanyController::class);

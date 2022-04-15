@@ -63,6 +63,15 @@
           
         
         </ul>
+
+       <a href="{{ route('adminLogout') }}" >
+            <button class="btn btn-primary" type="submit">
+             Logout
+            </button>
+        </a>
+                                      
+
+
       </nav><!-- End Icons Navigation -->
   
     </header><!-- End Header -->
